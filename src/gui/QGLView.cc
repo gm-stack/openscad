@@ -449,7 +449,7 @@ const QImage& QGLView::grabFrame()
 
 bool QGLView::save(const char *filename) const
 {
-  if (this->frame->hasAlphaChannel()) {
+  if (this->frame.hasAlphaChannel()) {
     printf("image has alpha\n");
   } else {
     printf("image no alpha\n");
