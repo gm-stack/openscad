@@ -82,6 +82,16 @@ QGLView::~QGLView()
 
 void QGLView::init()
 {
+
+  #ifdef USE_QOPENGLWIDGET
+  // Needed to show widget background color behind opengl view,
+  // otherwise we would see straight through the GLView.
+  this->setAttribute(Qt::WA_AlwaysStackOnTop);
+  // Make sure Qt will fill the background color with the color we set (in setWidgetBackground).
+  this->setAutoFillBackground(true);
+  setWidgetBackground(*this->colorscheme);
+  #endif
+
   resetView();
 
   this->mouse_drag_active = false;
@@ -89,6 +99,23 @@ void QGLView::init()
 
   setMouseTracking(true);
 }
+
+void QGLView::setWidgetBackground(const ColorScheme &cs) {
+  auto bgcol = ColorMap::getColor(cs, RenderColor::BACKGROUND_COLOR);
+  // If colorscheme background is not fully opaque,
+  if (bgcol.a() != 1.0f) {
+    auto pal = this->palette();
+    // then make widget background opaque so we don't see desktop/windows behind OpenSCAD
+    pal.setColor(this->backgroundRole(), QColor(bgcol.r(), bgcol.g(), bgcol.b(), 0xFF));
+    this->setPalette(pal);
+  }
+}
+
+void QGLView::setColorScheme(const ColorScheme &cs) {
+  setWidgetBackground(cs);
+  GLView::setColorScheme(cs);
+}
+
 
 void QGLView::resetView()
 {
@@ -412,7 +439,11 @@ const QImage& QGLView::grabFrame()
 {
   // Force reading from front buffer. Some configurations will read from the back buffer here.
   glReadBuffer(GL_FRONT);
-  this->frame = grabFramebuffer();
+  #ifdef USE_QOPENGLWIDGET
+	this->frame = grabFramebuffer();
+  #else
+  this->frame = grabFramebuffer(true); // include alpha
+  #endif
   return this->frame;
 }
 

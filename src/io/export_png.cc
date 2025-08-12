@@ -46,7 +46,7 @@ bool export_png(const std::shared_ptr<const Geometry>& root_geom, const ViewOpti
     return false;
   }
   std::shared_ptr<Renderer> geomRenderer;
-  // Choose PolySetRenderer for PolySet and Polygon2d, and for Manifold since we 
+  // Choose PolySetRenderer for PolySet and Polygon2d, and for Manifold since we
   // know that all geometries are convertible to PolySet.
   if (RenderSettings::inst()->backend3D == RenderBackend3D::ManifoldBackend ||
       std::dynamic_pointer_cast<const PolySet>(root_geom) ||
@@ -60,7 +60,7 @@ bool export_png(const std::shared_ptr<const Geometry>& root_geom, const ViewOpti
 
   glview->setCamera(camera);
   glview->setRenderer(geomRenderer);
-  glview->setColorScheme(RenderSettings::inst()->colorscheme);
+  glview->setColorSchemeByName(RenderSettings::inst()->colorscheme);
   glview->setShowCrosshairs(options["crosshairs"]);
   glview->setShowAxes(options["axes"]);
   glview->setShowScaleProportional(options["scales"]);
@@ -109,7 +109,7 @@ std::unique_ptr<OffscreenView> prepare_preview(Tree& tree, const ViewOptions& op
   OpenCSG::setContext(0);
   OpenCSG::setOption(OpenCSG::OffscreenSetting, OpenCSG::FrameBufferObject);
 #endif
-  glview->setColorScheme(RenderSettings::inst()->colorscheme);
+  glview->setColorSchemeByName(RenderSettings::inst()->colorscheme);
   glview->setShowAxes(options["axes"]);
   glview->setShowScaleProportional(options["scales"]);
   glview->setShowEdges(options["edges"]);

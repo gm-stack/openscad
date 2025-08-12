@@ -30,7 +30,7 @@ void GLView::paintGL() {}
 void GLView::resizeGL(int w, int h) {}
 void GLView::setCamera(const Camera& /*cam*/) {assert(false && "not implemented");}
 void GLView::setColorScheme(const ColorScheme&  /*cs*/){assert(false && "not implemented");}
-void GLView::setColorScheme(const std::string&  /*cs*/) {assert(false && "not implemented");}
+void GLView::setColorSchemeByName(const std::string &cs) {assert(false && "not implemented");}
 void GLView::setRenderer(std::shared_ptr<Renderer>) {}
 void GLView::showAxes(const Color4f& col) {}
 void GLView::showCrosshairs(const Color4f& col) {}

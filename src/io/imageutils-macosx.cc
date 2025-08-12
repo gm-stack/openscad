@@ -4,6 +4,10 @@
 #include <cassert>
 #include <cstddef>
 
+#ifdef ENABLE_OPENCSG
+#include <opencsg.h>
+#endif
+
 #include <ApplicationServices/ApplicationServices.h>
 
 static CGDataConsumerCallbacks dc_callbacks;
@@ -36,7 +40,13 @@ bool write_png(std::ostream& output, unsigned char *pixels, int width, int heigh
   const size_t rowBytes = static_cast<size_t>(width) * 4;
 //  CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
   CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-  const CGBitmapInfo bitmapInfo = kCGImageAlphaNoneSkipLast | kCGBitmapByteOrder32Big; // BGRA
+
+  #if defined(ENABLE_OPENCSG) && OPENCSG_VERSION >= 0x0140
+  CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedLast; // BGRA
+  #else
+  CGBitmapInfo bitmapInfo = kCGImageAlphaNoneSkipLast | kCGBitmapByteOrder32Big; // BGRA
+  #endif
+
   const int bitsPerComponent = 8;
   CGContextRef contextRef = CGBitmapContextCreate(pixels, width, height,
                                                   bitsPerComponent, rowBytes,

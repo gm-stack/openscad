@@ -172,6 +172,12 @@ void registerDefaultIcon(const QString&) { }
 
 int gui(std::vector<std::string>& inputFiles, const std::filesystem::path& original_path, int argc, char **argv, const std::string& gui_test, const bool reset_window_settings)
 {
+  auto qsf = QSurfaceFormat::defaultFormat();
+  if (!qsf.hasAlpha()) {
+  	qsf.setAlphaBufferSize(8);
+  	QSurfaceFormat::setDefaultFormat(qsf);
+  }
+
   OpenSCADApp app(argc, argv);
   QIcon::setThemeName(isDarkMode() ? "chokusen-dark" : "chokusen");
 

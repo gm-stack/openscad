@@ -727,7 +727,7 @@ list(APPEND PREVIEW_ONLY_FILES
   ${TEST_SCAD_DIR}/2D/issues/issue5574.scad
 )
 
-list(REMOVE_ITEM ALL_RENDER_FILES 
+list(REMOVE_ITEM ALL_RENDER_FILES
   # These tests only makes sense in preview mode
   ${PREVIEW_ONLY_FILES}
 )
@@ -966,8 +966,8 @@ set_test_config(Heavy FILES
 set_test_config(Bugs FILES ${BUGS_FILES} ${BUGS_2D_FILES} PREFIXES
  render-cgal render-manifold render-csg-cgal preview-cgal preview-manifold throwntogether-cgal throwntogether-manifold)
 set_test_config(Bugs FILES ${BUGS_FILES} PREFIXES
-  preview-off render-monotone 
-  preview-stl 
+  preview-off render-monotone
+  preview-stl
   render-stl render-stl-manifold
   render-stk-force
   render-off render-force-manifold)
@@ -983,7 +983,7 @@ set_test_config(Bugs FILES
 # Remove bugs fixed by manifold from the Bugs tag, to guard against regressions
 remove_test_config(Bugs FILES
   render-manifold_issue591
-  render-manifold_issue791 
+  render-manifold_issue791
   # FIXME: #802
   render-manifold_issue1455
 )
@@ -991,8 +991,8 @@ remove_test_config(Bugs FILES
 # Examples
 set_test_config(Examples FILES ${EXAMPLE_FILES} PREFIXES
   render-cgal render-manifold
-  preview-cgal preview-manifold preview-manifold preview throwntogether-cgal throwntogether-manifold 
-  render-csg-cgal render-monotone 
+  preview-cgal preview-manifold preview-manifold preview throwntogether-cgal throwntogether-manifold
+  render-csg-cgal render-monotone
   preview-off render-off dump-examples)
 set_test_config(Examples FILES ${EXAMPLE_2D_FILES} PREFIXES render-dxf)
 
@@ -1093,7 +1093,7 @@ add_cmdline_test(svgimport OPENSCAD ARGS --imgsize 600,600 SUFFIX png FILES
   ${TEST_SCAD_DIR}/svg/extruded/simple-center.scad
 )
 
-# 
+#
 # OBJECT echo tests
 #
 
@@ -1161,8 +1161,8 @@ ${TEST_SCAD_DIR}/3D/features/polyhedron-tests.scad
 
 #
 # There are some caveats with export and import, so we need to test a few combinations:
-# 1. It may be possible to export a non-manifold mesh (e.g. malformed polyhedron) due to 
-#    no manifoldness checks at export time. This is by design, e.g. to allow users to 
+# 1. It may be possible to export a non-manifold mesh (e.g. malformed polyhedron) due to
+#    no manifoldness checks at export time. This is by design, e.g. to allow users to
 #    troubleshoot externally.
 # 2. It may be possible to import such non-manifolds and preview or render them, but it will
 #    likely fail when trying to construct a data structure requiring manifold objects (e.g. --render=force)
@@ -1310,14 +1310,13 @@ add_failing_test(parsererrors          SUFFIX stl  FILES ${FAILING_FILES} ARGS -
 add_failing_test(hardwarnings          SUFFIX echo FILES ${TEST_SCAD_DIR}/misc/errors-warnings.scad ARGS --retval=1 --hardwarnings)
 
 # Verify that test framework is paying attention to alpha channel, issue 1492
-#add_cmdline_test(openscad-colorscheme-cornfield-alphafail  ARGS --colorscheme=Cornfield SUFFIX png FILES ${EXAMPLES_DIR}/Basics/logo.scad)
+add_cmdline_test(openscad-colorscheme-starnight-alphafail EXE ${OPENSCAD_BINPATH} ARGS --colorscheme=Starnight -o SUFFIX png FILES ${CMAKE_SOURCE_DIR}/../examples/Basics/logo.scad)
 
-# The "expected image" supplied for this "alphafail" test has the alpha channel for all background pixels cleared (a==0),
-# when they should be opaque (a==1) for this colorscheme.
-# So if test framework is functioning properly then the image comparison should fail.
-# Commented out because the master branch isn't capable of making the expected image yet.
-# Also TEST_GENERATE=1 makes an expected image that makes the test fail.
-#set_property(TEST openscad-colorscheme-cornfield-alphafail_logo PROPERTY WILL_FAIL TRUE)
+# The "expected image" supplied for this "alphafail" test
+# has the background color's alpha channel cleared (a==0),
+# when it should be opaque (a==1) for this colorscheme.
+# So if test framework is functioning properly then the image comparison is **expected to fail**.
+set_property(TEST openscad-colorscheme-starnight-alphafail_logo PROPERTY WILL_FAIL TRUE)
 
 #
 # Customizer tests
@@ -1415,7 +1414,9 @@ add_cmdline_test(openscad-colorscheme-cornfield       OPENSCAD FILES ${LOGO_EXAM
 add_cmdline_test(openscad-colorscheme-metallic        OPENSCAD FILES ${LOGO_EXAMPLE} SUFFIX png ARGS --colorscheme=Metallic)
 add_cmdline_test(openscad-colorscheme-sunset          OPENSCAD FILES ${LOGO_EXAMPLE} SUFFIX png ARGS --colorscheme=Sunset)
 add_cmdline_test(openscad-colorscheme-starnight       OPENSCAD FILES ${LOGO_EXAMPLE} SUFFIX png ARGS --colorscheme=Starnight)
+add_cmdline_test(openscad-colorscheme-starnight-transparent       OPENSCAD FILES ${LOGO_EXAMPLE} SUFFIX png ARGS --colorscheme=Starnight\ Transparent)
 add_cmdline_test(openscad-colorscheme-monotone        OPENSCAD FILES ${LOGO_EXAMPLE} SUFFIX png ARGS --colorscheme=Monotone)
+add_cmdline_test(openscad-colorscheme-transparent        OPENSCAD FILES ${LOGO_EXAMPLE} SUFFIX png ARGS --colorscheme=transparent)
 add_cmdline_test(openscad-colorscheme-clearsky        OPENSCAD FILES ${LOGO_EXAMPLE} SUFFIX png ARGS --colorscheme=ClearSky)
 add_cmdline_test(openscad-colorscheme-metallic-render OPENSCAD FILES ${CSG_EXAMPLE}  SUFFIX png ARGS --colorscheme=Metallic --render)
 
@@ -1508,7 +1509,7 @@ add_output_file_test(relative-output FILE ${TEST_SCAD_DIR}/3D/features/cube-test
 set_tests_properties(
   relative-output_csg_run
   relative-output_csg_check
-  relative-output_ast_run 
+  relative-output_ast_run
   relative-output_ast_check
   PROPERTIES DISABLED TRUE
 )
@@ -1572,9 +1573,9 @@ set_tests_properties(
   render-csg-cgal_projection
 
   # https://github.com/openscad/openscad/issues/5158
-  #render-cgal_example017 
+  #render-cgal_example017
   #throwntogether-cgal_example017
-  
+
   # https://github.com/openscad/openscad/issues/4398
   render-csg-cgal_logo_and_text
 
@@ -1607,7 +1608,7 @@ set_tests_properties(
   render-cgal_issue2841b
   preview-cgal_issue2841b
   render-csg-cgal_issue2841b
-  
+
   PROPERTIES DISABLED TRUE
 )
 if (ENABLE_MANIFOLD)
@@ -1676,14 +1677,14 @@ if (LIB3MF_FOUND)
 
      PROPERTIES DISABLED TRUE
     )
-  endif (ENABLE_MANIFOLD)  
+  endif (ENABLE_MANIFOLD)
   set_tests_properties(
     # When exported from CGAL, the file cannot be re-imported
     render-3mf-cgal_bad-stl-wing
 
     # For some reason, only failing on Linux
     render-3mf-cgal_bad-stl-tardis
-    
+
     PROPERTIES DISABLED TRUE
   )
 else()

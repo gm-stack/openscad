@@ -49,7 +49,7 @@ public:
   void setupCamera() ;
 
   void setColorScheme(const ColorScheme& cs);
-  void setColorScheme(const std::string& cs);
+  void setColorSchemeByName(const std::string& cs);
   void updateColorScheme();
 
   [[nodiscard]] bool showAxes() const { return this->showaxes; }

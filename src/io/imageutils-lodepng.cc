@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <vector>
+#ifdef ENABLE_OPENCSG
+#include <opencsg.h>
+#endif
 
 #include "lodepng/lodepng.h"
 
@@ -10,8 +13,12 @@ bool write_png(std::ostream& output, unsigned char *pixels, int width, int heigh
   std::vector<unsigned char> dataout;
   lodepng::State state;
   state.encoder.auto_convert = false;
-  // some png renderers have different interpretations of alpha, so don't use it
+  // Prior to 1.4.0, OpenCSG uses Alpha channel for visibility computations
+  #if defined(ENABLE_OPENCSG) && OPENCSG_VERSION >= 0x0140
+  state.info_png.color.colortype = LCT_RGBA;
+  #else
   state.info_png.color.colortype = LCT_RGB;
+  #endif
   state.info_png.color.bitdepth = 8;
   const auto err = lodepng::encode(dataout, pixels, width, height, state);
   if (err) return false;

@@ -37,6 +37,7 @@ public:
   // Properties
   bool orthoMode() const { return (this->cam.projection == Camera::ProjectionType::ORTHOGONAL); }
   void setOrthoMode(bool enabled);
+  void setColorScheme(const ColorScheme &cs);
   bool showScaleProportional() const { return this->showscale; }
   void setShowScaleProportional(bool enabled) { this->showscale = enabled; }
   std::string getRendererInfo() const override;
@@ -85,6 +86,8 @@ private:
   float mouseActions[MouseConfig::MouseAction::NUM_MOUSE_ACTIONS*MouseConfig::ACTION_DIMENSION];
   QPoint last_mouse;
   QImage frame; // Used by grabFrame() and save()
+
+  void setWidgetBackground(const ColorScheme &cs);
 
   void wheelEvent(QWheelEvent *event) override;
   void mousePressEvent(QMouseEvent *event) override;

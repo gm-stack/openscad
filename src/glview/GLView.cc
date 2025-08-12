@@ -91,7 +91,7 @@ void GLView::setColorScheme(const ColorScheme& cs)
   this->updateColorScheme();
 }
 
-void GLView::setColorScheme(const std::string& cs)
+void GLView::setColorSchemeByName(const std::string& cs)
 {
   const auto colorscheme = ColorMap::inst()->findColorScheme(cs);
   if (colorscheme) {
@@ -159,7 +159,11 @@ void GLView::paintGL()
   auto axescolor = ColorMap::getColor(*this->colorscheme, RenderColor::AXES_COLOR);
   auto crosshaircol = ColorMap::getColor(*this->colorscheme, RenderColor::CROSSHAIR_COLOR);
 
-  glClearColor(bgcol.r(), bgcol.g(), bgcol.b(), 1.0);
+  if (bgcol.a() == 0.0f) {
+    glClearColor(0,0,0,0);
+  } else {
+    glClearColor(bgcol.r(), bgcol.g(), bgcol.b(), 1.0);
+  }
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
   if (bgcol != bgstopcol) {
@@ -299,7 +303,8 @@ void GLView::initializeGL()
   glDepthRange(-far_far_away, +far_far_away);
 
   glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
   GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};
   GLfloat light_position0[] = {-1.0, +1.0, +1.0, 0.0};
