@@ -162,7 +162,7 @@ void GLView::paintGL()
   if (bgcol.a() == 0.0f) {
     glClearColor(0,0,0,0);
   } else {
-    glClearColor(bgcol.r(), bgcol.g(), bgcol.b(), 0.0);
+    glClearColor(bgcol.r(), bgcol.g(), bgcol.b(), bgcol.a());
   }
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -236,12 +236,12 @@ void GLView::paintGL()
   // Solves https://github.com/openscad/openscad/issues/3689.
   //
   // Originally developed by @karliss for FreeCAD (https://github.com/FreeCAD/FreeCAD/pull/19499).
-  GLboolean mask[4];
-  glGetBooleanv(GL_COLOR_WRITEMASK, mask);
-  glColorMask(false, false, false, true);
-  glClearColor(0, 0, 0, 1);
+  // GLboolean mask[4];
+  // glGetBooleanv(GL_COLOR_WRITEMASK, mask);
+  glColorMask(true, true, true, true);
+  //glClearColor(0, 0, 0, 1);
   glClear(GL_COLOR_BUFFER_BIT);
-  glColorMask(mask[0], mask[1], mask[2], mask[3]);
+  // glColorMask(mask[0], mask[1], mask[2], mask[3]);
 }
 
 #ifdef ENABLE_OPENCSG
