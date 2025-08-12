@@ -162,7 +162,7 @@ void GLView::paintGL()
   if (bgcol.a() == 0.0f) {
     glClearColor(0,0,0,0);
   } else {
-    glClearColor(bgcol.r(), bgcol.g(), bgcol.b(), 1.0);
+    glClearColor(bgcol.r(), bgcol.g(), bgcol.b(), 0.0);
   }
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -239,7 +239,7 @@ void GLView::paintGL()
   GLboolean mask[4];
   glGetBooleanv(GL_COLOR_WRITEMASK, mask);
   glColorMask(false, false, false, true);
-  glClearColor(0, 0, 0, 1);
+  glClearColor(0, 0, 0, 0);
   glClear(GL_COLOR_BUFFER_BIT);
   glColorMask(mask[0], mask[1], mask[2], mask[3]);
 }
